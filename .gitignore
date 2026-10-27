@@ -1,0 +1,24 @@
+# --- Ambiente virtual ---
+.venv/
+
+# --- Dados (link de download no README) ---
+# Ignora o conteúdo das subpastas de dataset/, mas mantém a estrutura via .gitkeep.
+# Usa dataset/*/* e não dataset/: se a pasta inteira for ignorada, o Git não entra
+# nela e a exceção "!" nunca é avaliada.
+dataset/*/*
+!dataset/*/.gitkeep
+
+# --- Codebook do CDC (link no README) ---
+docs/codebook*
+
+# --- Arquivos gerados pelo Python ---
+__pycache__/
+*.py[cod]
+
+# --- Arquivos gerados pelo Jupyter ---
+.ipynb_checkpoints/
+
+# --- Editor / sistema operacional ---
+TC1.code-workspace
+.vscode/
+.DS_Store

@@ -7,6 +7,8 @@
 # nela e a exceção "!" nunca é avaliada.
 dataset/*/*
 !dataset/*/.gitkeep
+# Recorte de 2 MB: permite executar o notebook sem baixar o dado bruto
+!dataset/processed/brfss2015_recorte.parquet
 
 # --- Codebook do CDC (link no README) ---
 docs/codebook*
@@ -22,3 +24,6 @@ __pycache__/
 TC1.code-workspace
 .vscode/
 .DS_Store
+
+# --- Saída da execução no Docker ---
+reports/tc1_diabetes_executado.ipynb

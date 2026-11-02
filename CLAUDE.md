@@ -58,16 +58,10 @@ Entregáveis:
   - Códigos especiais comuns: 7/77 = "não sabe", 9/99 = "recusou", 88/888 = "nenhum/zero",
     BLANK = não perguntado. Esses códigos **não são valores numéricos válidos** e precisam de
     tratamento explícito.
-  - O arquivo é grande: converter uma vez para Parquet (`dataset/interim/`) e trabalhar a
-    partir daí.
-- `dataset/reference/`: os 3 CSVs do Kaggle "Diabetes Health Indicators" (Alex Teboul),
-  versão já limpa do mesmo BRFSS 2015. Servem como **gabarito**: depois da minha limpeza,
-  comparar o resultado com eles e explicar as diferenças. Não usar como atalho.
-  - `diabetes_binary_health_indicators_BRFSS2015.csv`: binário, desbalanceado (~14% positivos)
-  - `diabetes_binary_5050split_health_indicators_BRFSS2015.csv`: balanceado artificialmente
-  - `diabetes_012_health_indicators_BRFSS2015.csv`: 3 classes (inclui pré-diabetes)
-- Dados brutos e intermediários **não vão para o Git** (`.gitignore`); o README traz o link
-  de download.
+  - O notebook trabalha com um recorte de 11 colunas em `dataset/processed/`, gerado do XPT
+    só se ainda não existir.
+- Dados brutos **não vão para o Git** (`.gitignore`); o README traz o link de download. A
+  exceção é o recorte de 2 MB, para o notebook rodar sem download.
 
 ## Convenções técnicas
 
@@ -77,7 +71,7 @@ Entregáveis:
   que aprenda dos dados (imputação, scaling, encoding, balanceamento).
 - Pré-processamento sempre dentro de `sklearn.pipeline.Pipeline` / `ColumnTransformer`,
   ajustado apenas no treino.
-- Desbalanceamento: tratar **só no treino** (`class_weight`, SMOTE via `imblearn.pipeline`).
+- Desbalanceamento: tratar **só no treino**, com `class_weight="balanced"`.
   Validação e teste mantêm a proporção real da população.
 - Ajuste de hiperparâmetros e de limiar de decisão na **validação**; o teste é usado uma única
   vez, no final.
@@ -85,30 +79,24 @@ Entregáveis:
   que um falso alarme). Accuracy só como referência, nunca isolada.
 - SHAP e KNN: usar amostras quando o volume tornar o cálculo lento, e documentar isso.
 
-## Estrutura do projeto (proposta)
+## Estrutura do projeto
+
+Tudo em um único notebook, com as bibliotecas e os métodos vistos nas aulas (ver D14 em `docs/decisoes.md`).
 
 ```
 TC1/
 ├── CLAUDE.md
 ├── README.md
 ├── Dockerfile
-├── requirements.txt
-├── .gitignore
+├── requirements.txt / requirements-dev.txt
 ├── dataset/
 │   ├── raw/          # LLCP2015.XPT (fora do Git)
-│   ├── interim/      # Parquet convertido / dados intermediários (fora do Git)
-│   ├── processed/    # dataset final limpo
-│   └── reference/    # CSVs do Kaggle (gabarito)
+│   └── processed/    # brfss2015_recorte.parquet (2 MB, versionado)
 ├── notebooks/
-│   ├── 01_exploracao_raw.ipynb
-│   ├── 02_limpeza.ipynb
-│   ├── 03_comparacao_reference.ipynb
-│   ├── 04_eda.ipynb
-│   ├── 05_modelagem.ipynb
-│   └── 06_interpretacao.ipynb
-├── src/              # funções reutilizáveis (limpeza, pipeline, avaliação)
-├── reports/
-│   └── figures/
+│   └── tc1_diabetes.ipynb
+├── reports/figures/
 └── docs/
-    └── decisoes.md   # log de decisões com justificativa
+    ├── decisoes.md
+    ├── plano.md
+    └── relatorio_tecnico.md
 ```

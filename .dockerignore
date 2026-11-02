@@ -1,0 +1,11 @@
+.git
+.venv
+.vscode
+**/.ipynb_checkpoints
+**/__pycache__
+dataset/raw
+dataset/interim
+dataset/reference
+docs
+notebooks/01_exploracao_raw.ipynb
+TC1.code-workspace

@@ -7,6 +7,6 @@ features = [
     "_RFDRHV5",   # 1 = não, 2 = sim
     "_RFCHOL",    # 1 = não, 2 = sim, 9 = não sabe, vazio = nunca mediu
     "_RFHYPE5",    # 1 = não, 2 = sim, 9 = não sabe
-    "GENHLTH"     # 1 = excelente, 2 = muito boa, 3 = boa, 4 = razoável, 5 = ruim, 7 = não sabe, 9 = recusa
+    "GENHLTH",     # 1 = excelente, 2 = muito boa, 3 = boa, 4 = razoável, 5 = ruim, 7 = não sabe, 9 = recusa
     "DIFFWALK",   # 1 = sim, 2 = não, 7 = não sabe, 9 = recusa
 ]

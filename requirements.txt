@@ -1,0 +1,9 @@
+# requirements.txt: o que o código do projeto importa
+pandas==3.1.0
+numpy==2.5.4
+pyarrow==26.0.0
+scikit-learn==1.9.1
+imbalanced-learn==0.14.2
+shap==0.54.1
+matplotlib==3.11.2
+seaborn==0.13.2

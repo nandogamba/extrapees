@@ -24,12 +24,12 @@ Objetivo: ambiente reproduzível e repositório seguro, sem dados grandes no Git
 - [x] Renomear `dataset/raw/LLCP2015.XPT␣` (tem um espaço no final do nome) para `LLCP2015.XPT`
 - [x] Criar o ambiente virtual (`python3 -m venv .venv`) e ativá-lo
 - [x] Criar o `.gitignore` (`.venv/`, dados brutos e intermediários, caches, checkpoints do Jupyter)
-- [ ] Rodar `git init` **depois** do `.gitignore` e conferir com `git status` que nenhum dado aparece
+- [x] Rodar `git init` **depois** do `.gitignore` e conferir com `git status` que nenhum dado aparece
 - [ ] Criar as pastas da estrutura (`notebooks/`, `src/`, `reports/figures/`, `dataset/interim/`, `dataset/processed/`)
 - [ ] Instalar as dependências e gerar o `requirements.txt` com as versões fixadas
 - [ ] Testar o kernel do Jupyter apontando para o `.venv`
 - [ ] Criar o `docs/decisoes.md` e registrar a decisão do ambiente (venv) e da fixação de versões
-- [ ] Primeiro commit
+- [x] Primeiro commit
 
 ## Fase 1: Primeiro contato com o bruto (`01_exploracao_raw.ipynb`)
 

@@ -12,7 +12,6 @@ O projeto foi simplificado para um único notebook (`notebooks/tc1_diabetes.ipyn
 - [x] Análise exploratória, correlação e descobertas (álcool e exercício)
 - [x] Separação treino / validação / teste
 - [x] Pipeline de pré-processamento
-- [x] Baseline e 3 modelos
 - [x] Limiar na validação e avaliação final no teste
 - [x] Feature importance e SHAP
 - [x] Discussão crítica

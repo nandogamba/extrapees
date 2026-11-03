@@ -6,17 +6,17 @@ sempre tem a palavra final.
 
 | Resultado no conjunto de teste | |
 |---|---|
-| Modelo | Random Forest, limiar 0,461 |
-| Recall da classe positiva | 79,5% |
-| Precisão da classe positiva | 30,6% |
-| F1 da classe positiva | 0,442 |
-| Accuracy | 68,8% |
-| AUC | 0,807 |
-| Pacientes encaminhados | 40,4% |
+| Modelo | Regressão Logística, limiar 0,133 |
+| Recall da classe positiva | 79,7% |
+| Precisão da classe positiva | 30,1% |
+| F1 da classe positiva | 0,437 |
+| Accuracy | 68,0% |
+| AUC | 0,801 |
+| Pacientes encaminhados | 41,2% |
 
 ## Onde está cada coisa
 
-- [`notebooks/tc1_diabetes.ipynb`](notebooks/tc1_diabetes.ipynb): todo o trabalho, da carga à discussão crítica, já com os resultados
+- [`notebooks/tc1_diabetes.ipynb`](notebooks/tc1_diabetes.ipynb): todo o trabalho, da carga à discussão crítica
 - [`docs/relatorio_tecnico.md`](docs/relatorio_tecnico.md): relatório técnico
 - [`docs/decisoes.md`](docs/decisoes.md): registro das decisões
 - [`reports/figures/`](reports/figures): gráficos gerados
@@ -49,4 +49,5 @@ e nenhum tratamento, então nenhum download é necessário.
 
 Para refazer o recorte a partir do dado original, baixe o
 [BRFSS 2015 do CDC](https://www.cdc.gov/brfss/annual_data/annual_2015.html) (arquivo SAS Transport),
-coloque o `LLCP2015.XPT` em `dataset/raw/`, apague o recorte e execute o notebook.
+coloque o `LLCP2015.XPT` em `dataset/raw/`, apague o recorte e execute o notebook sem Docker, porque a
+imagem não inclui `dataset/raw/`. O codebook das variáveis está na mesma página do CDC.

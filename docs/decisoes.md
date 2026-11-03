@@ -3,6 +3,9 @@
 Registro das decisões relevantes do projeto, com a justificativa de cada uma. Este arquivo
 alimenta o relatório técnico.
 
+As entradas são um histórico: quando uma decisão muda, a anterior é marcada e continua aqui.
+Menções a fases, a vários notebooks e a `dataset/interim/` são anteriores à simplificação da D14.
+
 Modelo de entrada:
 
 ```
@@ -33,6 +36,8 @@ Modelo de entrada:
 
 ## D02: Dados e codebook fora do Git
 
+> Alterada pelas D05 e D06: o recorte de 2 MB passou a ser versionado. O XPT e o codebook seguem fora do Git.
+
 - **Data:** 2026-10-27
 - **Fase:** 0
 - **Contexto:** o XPT bruto tem ~1,1 GB, os CSVs de referência ~50 MB e o codebook ~7 MB.
@@ -55,7 +60,7 @@ Modelo de entrada:
   fatores que mais pesaram) é entregue ao **médico**, que tem a palavra final.
 - **Justificativa:**
   - O tempo ocioso de espera é pouco aproveitado, e a coleta estruturada de dados apoia
-    qualquer diagnóstico. Esse questionario pode vir por meio de um tablet oferecido pela própria clinica ou por um link enviado para o whatsapp do cliente enquanto ele aguarda o atendimento.
+    qualquer diagnóstico. Esse questionário pode vir por meio de um tablet oferecido pela própria clínica ou por um link enviado para o WhatsApp do paciente enquanto ele aguarda o atendimento.
   - O foco é **trazer à luz** o risco em pessoas que ainda não sabem que o estilo de vida as
     coloca em risco. Neste caso, podemos abrangir para atendimentos médicos de diferentes especialidades.
   - O BRFSS também é autodeclarado, então o tipo de dado no treino é o mesmo que o
@@ -76,16 +81,11 @@ Modelo de entrada:
     de espera é uma população clínica), alvo autodeclarado (diabéticos não diagnosticados
     aparecem como negativos) e causalidade reversa (quem já foi diagnosticado muda de hábito).
 
-D04
- - Foi optado separar em dois arquivos requirements.txt. Um para o desenvolvimento contendo o Jupyter (mais competo/pesado) outro só para execução e validação do código.
-
- Contexto: o freeze tinha ~110 pacotes, a maioria do Jupyter. Então foi optado separar para dar a opção de executar somente o fonte sem executar o notebook.
-O Docker run executar completo com o notebook para facilitar a avaliação dos resultados.
 ---
 
 ## Notas rápidas (formalizar depois no modelo acima)
 
-- D04 requirements: separado em `requirements.txt` (execução) e `requirements-dev.txt` (Jupyter); só os pacotes diretos fixados.
+- D04 requirements: separado em `requirements.txt` (execução) e `requirements-dev.txt` (Jupyter); só os pacotes diretos fixados. Contexto: o freeze tinha ~110 pacotes, a maioria do Jupyter. O Docker executa o notebook completo, para facilitar a avaliação dos resultados.
 - D05 Docker: o container executa o notebook único com `nbconvert`, instalando o `requirements-dev.txt` (mais pesado, porém simples). Os dados vêm do recorte de 2 MB versionado, sem volume nem download.
 - D06 conversão: o XPT é lido inteiro uma vez, e só as 11 colunas usadas são salvas em Parquet (`dataset/processed/`). Substitui o Parquet completo em `dataset/interim/`.
 - D07 caminhos: a raiz do projeto é descoberta subindo os diretórios até achar o `requirements.txt` (cobre o local e o Docker; o Colab fica fora do escopo).
@@ -97,5 +97,8 @@ O Docker run executar completo com o notebook para facilitar a avaliação dos r
 - D13 `_RFCHOL` vazio: a variável só é preenchida para quem confirmou já ter medido o colesterol (`BLOODCHO = 1`). O vazio (59 mil, 13%) vira a categoria 3, "sem medição confirmada", e não NaN, pois é ausência estrutural e provavelmente se associa ao acesso ao diagnóstico; imputá-lo pelo mais frequente o igualaria a "colesterol normal". Correção (2026-11-02): o rótulo original "nunca mediu" era impreciso, pois o vazio reúne `BLOODCHO` 2 = nunca mediu (49.673; 84,0%; prevalência do alvo de 4,5%), 7 = não sabe (9.279; 15,7%; 8,4%) e 9 = recusou (202; 0,3%; 11,4%). Alternativa descartada: separar os grupos com `BLOODCHO`, que exigiria mudar o recorte e reexecutar tudo, além de imputar 9.481 casos como "colesterol normal". O modelo não muda, só o rótulo.
 - D14 simplificação (2026-11-02): tudo em um único notebook, com os métodos das aulas, mantendo o BRFSS bruto, o alvo, as 10 features e as descobertas. Saíram: 6 notebooks → 1, `src/`, comparação com o Kaggle, SMOTE, calibração e os 5 níveis. Justificativa: o enunciado aceita notebook único; a complexidade não aumentava o resultado (modelos com AUC de 0,804 a 0,811).
 - D15 pré-processamento (revisado na reescrita, 2026-11-02): só o IMC como numérica (mediana + `StandardScaler`); todas as demais como categóricas (mais frequente + `OneHotEncoder`), inclusive faixa etária e saúde geral, antes tratadas como numéricas por terem ordem. Com isso, os modelos não recebem a ordem dessas duas variáveis, mas a Regressão Logística pode captar relações não lineares, como a queda da prevalência no 80+. O efeito de cada variável na interpretação precisa somar suas colunas one-hot. IMC > 70 (1.034 casos) mantido, por não haver critério objetivo de corte.
-- D16 escolha do modelo e do limiar: regras fixadas antes de olhar o teste. Modelo com a maior AUC na validação (Random Forest, 0,811); limiar mais alto com recall ≥ 80% na validação (0,461). No teste: recall de 79,5%, precisão de 30,6%, 40,4% encaminhados. O limiar não foi reajustado após o teste.
-- D17 resultado do código gestacional: só 30,3% são sinalizados, abaixo dos 40,4% da base geral. O alvo amplo (D08) não se cumpre para esse grupo, e isso está documentado como limitação. Mantido sem reajuste após o teste; reavaliar em uma próxima versão.
+- D16 escolha do modelo e do limiar (**resultado substituído pela D19; as regras continuam valendo**): regras fixadas antes de olhar o teste. Modelo com a maior AUC na validação (Random Forest, 0,811); limiar mais alto com recall ≥ 80% na validação (0,461). No teste: recall de 79,5%, precisão de 30,6%, 40,4% encaminhados. O limiar não foi reajustado após o teste.
+- D17 resultado do código gestacional: só 30,3% são sinalizados, abaixo dos 40,4% da base geral. O alvo amplo (D08) não se cumpre para esse grupo, e isso está documentado como limitação. Mantido sem reajuste após o teste; reavaliar em uma próxima versão. Atualização com o modelo da D19, na validação: 31,9% dos casos gestacionais são sinalizados, abaixo dos 34,0% do grupo sem alteração. A limitação continua.
+- D18 preparação por modelo (2026-11-03, complementa a D15): split único, com as mesmas linhas para os dois modelos. Regressão Logística: códigos 7, 9 e 14 viram vazio; IMC com mediana e `StandardScaler`; demais com mais frequente e one-hot. Random Forest: códigos mantidos como resposta própria, sem one-hot e sem escala; vazios imputados (IMC pela mediana, demais pelo mais frequente). Na validação, sem `class_weight`: RL com F1 0,238 e AUC 0,805; RF com F1 0,311 e AUC 0,741, com overfitting (AUC 0,991 no treino).
+- D19 modelo final (2026-11-03, substitui o resultado da D16): Regressão Logística, pela regra da maior AUC na validação (0,805 contra 0,741 do Random Forest, que não teve hiperparâmetros ajustados). Limiar mais alto com recall ≥ 80% na validação: 0,133. No teste: recall de 79,7%, precisão de 30,1%, F1 de 0,437, accuracy de 68,0%, AUC de 0,801 e 41,2% encaminhados. ⚠️ O teste já tinha sido usado na versão da D16, antes da mudança de preparação e de modelo, então não é um primeiro uso; documentado no relatório como ressalva. A Árvore de Decisão e o baseline saíram do notebook; a referência de 84,4% de accuracy vem da proporção da classe majoritária.
+- D20 desbalanceamento (2026-11-03): os modelos não usam `class_weight`; a compensação é feita pelo limiar da D19. Por isso o recall é baixo no limiar de 0,5 (0,151 na RL) e chega a 80% no limiar de 0,133. Validação e teste mantêm a proporção real.

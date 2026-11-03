@@ -27,7 +27,7 @@ e renda e escolaridade (risco de discriminação socioeconômica).
 **Limpeza**, antes da separação, sem aprender nada dos dados:
 
 - códigos de "não sabe", "recusou" e "ausente" viram NaN;
-- o vazio de `_RFCHOL` vira a categoria "não mediu", porque é uma resposta, e não um dado faltante;
+- o vazio de `_RFCHOL` vira a categoria "sem medição confirmada", e não um dado a imputar: 84% desse grupo nunca mediu o colesterol, e os demais não sabem se mediram ou recusaram responder;
 - o IMC é dividido por 100, por causa das casas decimais implícitas do CDC.
 
 Foi escolhida a `_SMOKER3` em vez da `SMOKDAY2`: esta é uma pergunta de seguimento, e filtrar seus vazios
@@ -102,7 +102,7 @@ O SHAP foi calculado em uma amostra de 1.000 pessoas da validação, por custo c
 saúde geral, colesterol, IMC e idade são as variáveis de maior peso. A idade pesa bem mais que o álcool
 (|SHAP| de 0,055 contra 0,008), como previsto na exploração.
 
-Ser bebedor pesado **reduz** o risco estimado (SHAP médio de −0,042), e "nunca mediu o colesterol" também.
+Ser bebedor pesado **reduz** o risco estimado (SHAP médio de −0,042), e "sem medição confirmada de colesterol" também.
 Ambos devem ser lidos como associação: o primeiro provavelmente reflete a causalidade reversa, e o segundo
 pode refletir menos acesso ao diagnóstico.
 

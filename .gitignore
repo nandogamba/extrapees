@@ -10,9 +10,6 @@ dataset/*/*
 # Recorte de 2 MB: permite executar o notebook sem baixar o dado bruto
 !dataset/processed/brfss2015_recorte.parquet
 
-# --- Codebook do CDC (link no README) ---
-docs/codebook*
-
 # --- Arquivos gerados pelo Python ---
 __pycache__/
 *.py[cod]
